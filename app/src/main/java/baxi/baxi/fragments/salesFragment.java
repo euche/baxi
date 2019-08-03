@@ -1,6 +1,10 @@
 package baxi.baxi.fragments;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +12,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.Serializable;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -17,9 +27,12 @@ import baxi.baxi.R;
 import baxi.baxi.Service.apiClient;
 import baxi.baxi.Service.apiService;
 import baxi.baxi.Utils.userPref;
+import baxi.baxi.activities.completsaleActivity;
 import baxi.baxi.adapter.salesListAdapter;
+import baxi.baxi.models.Cart;
 import baxi.baxi.models.Product;
 import baxi.baxi.models.Service;
+import baxi.baxi.models.item;
 import baxi.baxi.models.sDatasource;
 import baxi.baxi.models.storeResponse;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -50,7 +63,34 @@ public class salesFragment extends Fragment {
 
     private RecyclerView recyclerView;
 
+    private Button cart;
 
+    private salesListAdapter.salelistAdapterinterface info;
+
+    private salesListAdapter sales;
+
+    private String itemname;
+
+    private float itemprice;
+
+    private int itemquantity;
+
+    private List<Cart> nextactive = new ArrayList<>();
+
+    private String[] cartitems = new String[30];
+
+    private ArrayList<String> cartitemss = new ArrayList<>();
+
+    private ArrayList<String> cartitemsprice = new ArrayList<>();
+
+
+
+
+
+
+    private item itemObject;
+
+    private receiveCall rc;
 
 
     @Override
@@ -62,13 +102,53 @@ public class salesFragment extends Fragment {
         recyclerView = root.findViewById(R.id.product_items);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
+         sales = new salesListAdapter(getContext(),combinedArray,info);
+
+
+
+        cart = root.findViewById(R.id.checkCart);
+
+        cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+
+                Intent i = new Intent(getContext(),completsaleActivity.class);
+
+                  Bundle b = new Bundle();
+
+                  b.putStringArrayList("arraylist",cartitemss);
+                  b.putStringArrayList("arrayprice",cartitemsprice);
+
+                          //.putStringArray("arraylist",cartitems);
+                 i.putExtras(b);
+                getContext().startActivity(i);
+
+//                cartList nextFrag= new cartList();
+//                getActivity().getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.cart_sales, nextFrag, "Fragment")
+//                        .addToBackStack(null)
+//                        .commit();
+
+
+
+
+//           salesPicker();
+
+
+
+            }
+        });
+
+
 
         return root;
+
+
+
     }
-
-
-
-
 
 
 
@@ -91,7 +171,33 @@ public class salesFragment extends Fragment {
         NetworkRequest();
 
 
+
+//
+
+
+
+
+
+        res();
     }
+
+
+//    private void salesPicker() {
+//
+//        Dialog salesdialog = new Dialog(getContext());
+//
+//        it
+//
+//
+//
+//
+//
+//    }
+
+
+
+
+
 
 
 
@@ -153,7 +259,12 @@ public class salesFragment extends Fragment {
 
 
 
-                                 recyclerView.setAdapter(new salesListAdapter(getContext(),combinedArray));
+//                                 recyclerView.setAdapter(new salesListAdapter(getContext(),combinedArray,info));
+
+                                 recyclerView.setAdapter(sales);
+
+
+
 
 
 
@@ -181,6 +292,58 @@ public class salesFragment extends Fragment {
     }
 
 
+    public void res(){
+
+        info = new salesListAdapter.salelistAdapterinterface() {
+            @Override
+            public void onItemnameclicked(String name) {
+
+
+                Log.e("Transfer ",name);
+
+                itemname = name;
+
+
+
+
+                  cartitemss.add(name);
+
+
+
+
+
+
+                Log.e("cartitems",""+cartitemss.size()+itemname);
+
+
+            }
+
+            @Override
+            public void onItemprice(float price) {
+
+                itemprice = price;
+
+                cartitemsprice.add(String.valueOf(price));
+            }
+
+            @Override
+            public void ontItemquantity(int quantity) {
+
+                itemquantity = quantity;
+            }
+        };
+
+
+        itemObject = new item (itemname,itemprice,itemquantity);
+
+
+
+
+        nextactive.add(new Cart(itemObject,1));
+
+
+    }
+
 
 
 
@@ -193,6 +356,17 @@ public class salesFragment extends Fragment {
 
 
 
+
+
+
+
+    public interface  receiveCall{
+
+        void serialItem(item m);
+
+        void serialItemname(String h);
+
+    }
 
 
 

@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">baxi</string>
+
+
+    <string-array name="payment_type">
+
+        <item>POS</item>
+        <item>Transfer</item>
+        <item>Cash</item>
+
+    </string-array>
+
+
 </resources>

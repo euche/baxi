@@ -2,17 +2,21 @@ package baxi.baxi.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import baxi.baxi.R;
 import baxi.baxi.Service.apiClient;
 import baxi.baxi.Service.apiService;
 import baxi.baxi.Utils.userPref;
+import baxi.baxi.adapter.custListAdapter;
 import baxi.baxi.models.Datum;
 import baxi.baxi.models.custResponse;
 import retrofit2.Call;
@@ -32,12 +36,27 @@ public class customerFragment extends Fragment {
 
     private apiService api;
 
+    private RecyclerView cr;
+
+    private custListAdapter c;
+
+    private List<Datum> clite = new ArrayList<>();
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 
         View root = inflater.inflate(R.layout.frag_customer,container,false);
+
+
+        cr = root.findViewById(R.id.customer_items);
+        cr.setLayoutManager(new LinearLayoutManager(getContext()));
+        cr.setHasFixedSize(true);
+
+//        c = new custListAdapter(getContext(),clite);
+
 
 
         return root;
@@ -48,6 +67,9 @@ public class customerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+
+
 
 
 
@@ -98,6 +120,13 @@ public class customerFragment extends Fragment {
                 List<Datum> cList = response.body().getData();
 
                 Log.e("custFragment", "Size of list"+cList.size());
+
+
+                clite = cList;
+
+
+                cr.setAdapter(new custListAdapter(getContext(),clite));
+
 
 
 

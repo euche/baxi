@@ -4,6 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.util.List;
+
+import baxi.baxi.models.Cart;
+import baxi.baxi.models.item;
+
 public class userPref {
 
 
@@ -12,6 +17,8 @@ public class userPref {
     private static String STORE_ID = "storeid" ;
 
     private static String BUSS_ID = "bussid";
+
+    private static String TOTAL_PRICE = "total";
 
 
 
@@ -59,6 +66,9 @@ public class userPref {
     }
 
 
+
+
+
     public void setBussid(Context c, int b){
 
         SharedPreferences st = PreferenceManager.getDefaultSharedPreferences(c);
@@ -79,7 +89,25 @@ public class userPref {
     }
 
 
+  public void setTP (Context c,float total){
 
+      SharedPreferences st = PreferenceManager.getDefaultSharedPreferences(c);
+      SharedPreferences.Editor edit = st.edit();
+      edit.putFloat(TOTAL_PRICE,total);
+      edit.apply();
+
+
+
+  }
+
+
+  public float getTP(Context c){
+
+      SharedPreferences st = PreferenceManager.getDefaultSharedPreferences(c);
+
+      return st.getFloat(TOTAL_PRICE,0);
+
+  }
 
 
 
