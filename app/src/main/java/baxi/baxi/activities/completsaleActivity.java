@@ -221,6 +221,9 @@ public class completsaleActivity extends AppCompatActivity  {
 
 
                         Log.e(" Dialog1"," payment option "+ paymentOption);
+
+
+
                     }
                 });
 

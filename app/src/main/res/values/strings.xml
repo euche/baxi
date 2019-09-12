@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">baxi</string>
+    <string name="Subtotal">Subtotal</string>
+    <string name="Discount">Discount</string>
+    <string name="vat">VAT</string>
 
 
     <string-array name="payment_type">

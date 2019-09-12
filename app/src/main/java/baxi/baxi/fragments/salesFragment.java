@@ -126,11 +126,7 @@ public class salesFragment extends Fragment {
                  i.putExtras(b);
                 getContext().startActivity(i);
 
-//                cartList nextFrag= new cartList();
-//                getActivity().getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.cart_sales, nextFrag, "Fragment")
-//                        .addToBackStack(null)
-//                        .commit();
+
 
 
 
